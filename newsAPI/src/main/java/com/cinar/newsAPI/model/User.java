@@ -13,15 +13,18 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(name = "UniqueUsernameAndEmail",
+        columnNames = {"username", "email"}),})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String userId;
+    @Column(unique = true)
     private String username;
     private String password;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String email;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
