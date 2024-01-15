@@ -1,14 +1,12 @@
 package com.cinar.newsAPI.controller;
 
+import com.cinar.newsAPI.dto.CreateUserRequest;
 import com.cinar.newsAPI.dto.UserDto;
 import com.cinar.newsAPI.dto.UsersNewsDto;
 import com.cinar.newsAPI.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,5 +37,9 @@ public class UserController {
     @GetMapping("/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email){
         return ResponseEntity.ok(userService.getUserByEmail(email));
+    }
+    @PostMapping
+    public ResponseEntity<UserDto> CreateNewUser(@RequestBody CreateUserRequest createUserRequest){
+        return ResponseEntity.ok(userService.createNewUser(createUserRequest));
     }
 }
