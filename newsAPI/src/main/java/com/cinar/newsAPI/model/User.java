@@ -1,6 +1,8 @@
 package com.cinar.newsAPI.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,11 +22,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String userId;
     @Column(unique = true)
+    @NotBlank
     private String username;
     private String password;
     private String firstName;
     private String lastName;
     @Column(unique = true)
+    @Email
     private String email;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
