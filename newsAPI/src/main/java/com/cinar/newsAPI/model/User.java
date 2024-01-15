@@ -15,19 +15,16 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users", uniqueConstraints = {@UniqueConstraint(name = "UniqueUsernameAndEmail",
-        columnNames = {"username", "email"}),})
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String userId;
-    @Column(unique = true)
     @NotBlank
     private String username;
     private String password;
     private String firstName;
     private String lastName;
-    @Column(unique = true)
     @Email
     private String email;
 
@@ -38,4 +35,11 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<News> news;
 
+    public User(String username, String password, String firstName, String lastName, String email) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 }
