@@ -27,15 +27,15 @@ public class UserController {
     public ResponseEntity<UserDto> getUserById(@PathVariable String id){
         return ResponseEntity.ok(userService.getUserById(id));
     }
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username){
-        return ResponseEntity.ok(userService.getUserById(username));
+        return ResponseEntity.ok(userService.getUserByUsername(username));
     }
     @GetMapping("/{username}/news")
     public ResponseEntity<UsersNewsDto> getNewsByUsername(@PathVariable String username){
         return ResponseEntity.ok(userService.getNewsByUsername(username));
     }
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email){
         return ResponseEntity.ok(userService.getUserByEmail(email));
     }
