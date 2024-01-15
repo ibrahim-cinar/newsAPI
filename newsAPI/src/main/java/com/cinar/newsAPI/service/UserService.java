@@ -1,6 +1,7 @@
 package com.cinar.newsAPI.service;
 
 import com.cinar.newsAPI.dto.CreateUserRequest;
+import com.cinar.newsAPI.dto.UpdateUserRequest;
 import com.cinar.newsAPI.dto.UserDto;
 import com.cinar.newsAPI.dto.UsersNewsDto;
 import com.cinar.newsAPI.dto.converter.UserDtoConverter;
@@ -10,7 +11,9 @@ import com.cinar.newsAPI.model.User;
 import com.cinar.newsAPI.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -74,7 +77,6 @@ public class UserService {
         }
         else     throw new EmailAlreadyExistsException("Email already exists");
 
-
     }
     private boolean isEmailUnique(String email){
         Optional<User> existingUserEmail = userRepository.findUserByEmail(email);
@@ -96,5 +98,41 @@ public class UserService {
                 request.getLastName() != null &&
                 request.getEmail() != null &&
                 request.getPassword() != null;
+    }
+    public UserDto updateUser(String email, UpdateUserRequest updateUserRequest) {
+        User user = findUserByEmail(email)
+                .orElseThrow(() -> new EmailNotFoundException("Email not found: " + email));
+
+        validateUniqueFields(user, updateUserRequest);
+
+        user.setUsername(updateUserRequest.getUsername());
+        user.setPassword(updateUserRequest.getPassword());
+        user.setFirstName(updateUserRequest.getFirstName());
+        user.setLastName(updateUserRequest.getLastName());
+        user.setEmail(updateUserRequest.getEmail());
+
+        User updatedUser = userRepository.save(user);
+        return userDtoConverter.convert(updatedUser);
+    }
+
+    private void validateUniqueFields(User user, UpdateUserRequest updateUserRequest) {
+        if (!user.getEmail().equals(updateUserRequest.getEmail()) && !isEmailUnique(updateUserRequest.getEmail())) {
+            throw new EmailAlreadyExistsException("Email already exists");
+        }
+
+        if (!user.getUsername().equals(updateUserRequest.getUsername()) && !isUsernameUnique(updateUserRequest.getUsername())) {
+            throw new UsernameAlreadyExistsException("Username already exists");
+        }
+    }
+
+    public void deleteUser(String email){
+        if(doesUserExist(email)){
+            userRepository.deleteById(email);
+            throw new ResponseStatusException(HttpStatus.OK, "user deleted");
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user no found");
+    }
+    private  boolean doesUserExist(String email){
+        return userRepository.existsById(email);
     }
 }

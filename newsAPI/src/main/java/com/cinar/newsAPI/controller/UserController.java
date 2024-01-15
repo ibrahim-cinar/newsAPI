@@ -1,6 +1,7 @@
 package com.cinar.newsAPI.controller;
 
 import com.cinar.newsAPI.dto.CreateUserRequest;
+import com.cinar.newsAPI.dto.UpdateUserRequest;
 import com.cinar.newsAPI.dto.UserDto;
 import com.cinar.newsAPI.dto.UsersNewsDto;
 import com.cinar.newsAPI.service.UserService;
@@ -41,5 +42,10 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDto> CreateNewUser(@RequestBody CreateUserRequest createUserRequest){
         return ResponseEntity.ok(userService.createNewUser(createUserRequest));
+    }
+
+    @PutMapping("/{email}")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UpdateUserRequest updateUserRequest,@PathVariable String email){
+        return ResponseEntity.ok(userService.updateUser(email,updateUserRequest));
     }
 }
