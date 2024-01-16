@@ -54,4 +54,8 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> InvalidInputExceptionHandler(InvalidInputException exception)  {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(NewsNotFoundException.class)
+    public ResponseEntity<?> NewsNotFoundExceptionHandler(NewsNotFoundException exception)  {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

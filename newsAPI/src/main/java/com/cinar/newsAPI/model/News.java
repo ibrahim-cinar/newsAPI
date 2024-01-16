@@ -7,7 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Builder
 @Data
@@ -23,10 +26,23 @@ public class News {
     private String description;
     private String photoPath;
     private LocalDateTime createdTime;
-    @OneToMany(mappedBy = "news",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "news",fetch = FetchType.LAZY)
     private List<Comment> comments;
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
+    public void addComments(Comment comment){
+        if(comments==null) comments=new ArrayList<>();
+        comments.add(comment);
+    }
+    public List<Comment> getComments() {
+        return comments != null ? comments : Collections.emptyList();
+    }
+    public News(String title, String description, String photoPath, LocalDateTime createdTime) {
+        this.title = title;
+        this.description = description;
+        this.photoPath = photoPath;
+        this.createdTime = createdTime;
+    }
 }

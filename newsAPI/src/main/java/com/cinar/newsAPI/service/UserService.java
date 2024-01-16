@@ -54,11 +54,6 @@ public class UserService {
         return userDtoConverter.convert(usernameNews);
     }
 
-    public UsersNewsDto getNewsByUsername(String username){
-        var usernameNews = findUserByUsername(username).orElseThrow(()->new UserNotFoundException("Users News could not find by username "+username));
-        return userNewsDtoConverter.convert(usernameNews);
-    }
-
 
     protected Optional<User> findUserByEmail(String email){
         return userRepository.findUserByEmail(email);

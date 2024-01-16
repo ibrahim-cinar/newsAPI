@@ -31,10 +31,7 @@ public class UserController {
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username){
         return ResponseEntity.ok(userService.getUserByUsername(username));
     }
-    @GetMapping("/{username}/news")
-    public ResponseEntity<UsersNewsDto> getNewsByUsername(@PathVariable String username){
-        return ResponseEntity.ok(userService.getNewsByUsername(username));
-    }
+
     @GetMapping("/email/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email){
         return ResponseEntity.ok(userService.getUserByEmail(email));
@@ -47,5 +44,10 @@ public class UserController {
     @PutMapping("/{email}")
     public ResponseEntity<UserDto> updateUser(@RequestBody UpdateUserRequest updateUserRequest,@PathVariable String email){
         return ResponseEntity.ok(userService.updateUser(email,updateUserRequest));
+    }
+    @DeleteMapping("/{email}")
+    public  ResponseEntity<UserDto> deleteCustomer(@PathVariable String email){
+        userService.deleteUser(email);
+        return ResponseEntity.ok().build();
     }
 }

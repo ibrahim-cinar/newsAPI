@@ -8,7 +8,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Builder
 @Data
@@ -41,5 +44,19 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+    }
+    public void addNews(News news1){
+        if(news==null) news=new ArrayList<>();
+        news.add(news1);
+    }
+    public List<News> getNews() {
+        return Objects.requireNonNullElse(news, Collections.emptyList());
+    }
+    public void addComments(Comment comment){
+        if(comments==null) comments=new ArrayList<>();
+        comments.add(comment);
+    }
+    public List<Comment> getComments() {
+        return Objects.requireNonNullElse(comments, Collections.emptyList());
     }
 }

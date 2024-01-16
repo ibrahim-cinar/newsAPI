@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -19,11 +20,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String commentId;
     private String text;
-    private String commentTime;
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private LocalDateTime commentTime;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "news_id",nullable = false)
     private News news;
 
