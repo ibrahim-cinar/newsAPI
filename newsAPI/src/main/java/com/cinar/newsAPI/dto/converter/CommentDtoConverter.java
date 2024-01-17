@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommentDtoConverter {
     public CommentDto convert(Comment from){
-        return  new CommentDto(from.getText(),from.getCommentTime());
+        return  new CommentDto(
+                from.getCommentId(), from.getText(),from.getCommentTime());
     }
 }

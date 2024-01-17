@@ -3,10 +3,9 @@ package com.cinar.newsAPI.service;
 import com.cinar.newsAPI.dto.*;
 import com.cinar.newsAPI.dto.converter.NewsDtoConverter;
 import com.cinar.newsAPI.dto.converter.NewsUserDtoConverter;
-import com.cinar.newsAPI.dto.converter.UserNewsDtoConverter;
+import com.cinar.newsAPI.dto.converter.UsersNewsDtoConverter;
 import com.cinar.newsAPI.exception.NewsNotFoundException;
 import com.cinar.newsAPI.exception.UserNotFoundException;
-import com.cinar.newsAPI.model.Comment;
 import com.cinar.newsAPI.model.News;
 import com.cinar.newsAPI.repository.NewsRepository;
 import org.springframework.http.HttpStatus;
@@ -22,14 +21,14 @@ public class NewsService {
     private final NewsRepository newsRepository;
     private final NewsDtoConverter newsDtoConverter;
     private  final NewsUserDtoConverter newsUserDtoConverter;
-    private final UserNewsDtoConverter userNewsDtoConverter;
+    private final UsersNewsDtoConverter usersNewsDtoConverter;
     private final UserService userService;
 
-    public NewsService(NewsRepository newsRepository, NewsDtoConverter newsDtoConverter, NewsUserDtoConverter newsUserDtoConverter, UserNewsDtoConverter userNewsDtoConverter, UserService userService) {
+    public NewsService(NewsRepository newsRepository, NewsDtoConverter newsDtoConverter, NewsUserDtoConverter newsUserDtoConverter, UsersNewsDtoConverter usersNewsDtoConverter, UserService userService) {
         this.newsRepository = newsRepository;
         this.newsDtoConverter = newsDtoConverter;
         this.newsUserDtoConverter = newsUserDtoConverter;
-        this.userNewsDtoConverter = userNewsDtoConverter;
+        this.usersNewsDtoConverter = usersNewsDtoConverter;
         this.userService = userService;
     }
     public List<NewsDto> getAllNews(){
@@ -42,8 +41,9 @@ public class NewsService {
         return newsDtoConverter.convert(findNewsById(id));
     }
     public UsersNewsDto getNewsByUsername(String username){
-        var usernameNews = userService.findUserByUsername(username).orElseThrow(()->new UserNotFoundException("Users News could not find by username "+username));
-        return userNewsDtoConverter.convert(usernameNews);
+        var news = newsRepository.findAll();
+        var usernameNews = news.stream().filter(news1 -> news1.getUser().getUsername().equals(username)).findFirst().orElseThrow(()->new UserNotFoundException("Users News could not find by username "+username));
+        return usersNewsDtoConverter.convert(usernameNews);
     }
     public List<NewsUserDto> getLatestNews(){
 

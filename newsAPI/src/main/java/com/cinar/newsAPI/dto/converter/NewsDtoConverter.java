@@ -17,7 +17,7 @@ public class NewsDtoConverter {
     }
 
     public NewsDto convert(News from){
-        return new NewsDto(from.getDescription(), from.getTitle(), from.getCreatedTime(), from.getPhotoPath(),
+        return new NewsDto(from.getNewsId(),from.getDescription(), from.getTitle(), from.getCreatedTime(), from.getPhotoPath(),
                 from.getComments().stream().map(commentDtoConverter::convert).collect(Collectors.toList()));
     }
 }

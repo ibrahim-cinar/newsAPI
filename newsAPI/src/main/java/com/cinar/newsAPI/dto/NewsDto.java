@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class NewsDto {
+    private String newsId;
     private String description;
     private String title;
     private LocalDateTime createdTime;

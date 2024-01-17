@@ -13,6 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 public class UsersNewsDto {
     private String username;
-    private String email;
     private List<NewsDto> newsDtoList;
 }

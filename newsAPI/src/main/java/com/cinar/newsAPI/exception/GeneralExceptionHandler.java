@@ -58,4 +58,8 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> NewsNotFoundExceptionHandler(NewsNotFoundException exception)  {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<?> CommentNotFoundExceptionHandler(CommentNotFoundException exception)  {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

@@ -3,9 +3,8 @@ package com.cinar.newsAPI.service;
 import com.cinar.newsAPI.dto.CreateUserRequest;
 import com.cinar.newsAPI.dto.UpdateUserRequest;
 import com.cinar.newsAPI.dto.UserDto;
-import com.cinar.newsAPI.dto.UsersNewsDto;
 import com.cinar.newsAPI.dto.converter.UserDtoConverter;
-import com.cinar.newsAPI.dto.converter.UserNewsDtoConverter;
+import com.cinar.newsAPI.dto.converter.UsersNewsDtoConverter;
 import com.cinar.newsAPI.exception.*;
 import com.cinar.newsAPI.model.User;
 import com.cinar.newsAPI.repository.UserRepository;
@@ -24,12 +23,12 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final UserDtoConverter userDtoConverter;
-    private final UserNewsDtoConverter userNewsDtoConverter;
+    private final UsersNewsDtoConverter usersNewsDtoConverter;
 
-    public UserService(UserRepository userRepository, UserDtoConverter userDtoConverter, UserNewsDtoConverter userNewsDtoConverter) {
+    public UserService(UserRepository userRepository, UserDtoConverter userDtoConverter, UsersNewsDtoConverter usersNewsDtoConverter) {
         this.userRepository = userRepository;
         this.userDtoConverter = userDtoConverter;
-        this.userNewsDtoConverter = userNewsDtoConverter;
+        this.usersNewsDtoConverter = usersNewsDtoConverter;
     }
     public List<UserDto> getAllUser(){
         return userRepository.findAll().stream().
