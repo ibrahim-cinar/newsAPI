@@ -37,6 +37,12 @@ public class User {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<News> news;
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinTable(
+            name="users_roles",
+            joinColumns={@JoinColumn(name="user_id", referencedColumnName="userId")},
+            inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="roleId")})
+    private List<Role> roles = new ArrayList<>();
 
     public User(String username, String password, String firstName, String lastName, String email) {
         this.username = username;
@@ -52,11 +58,6 @@ public class User {
     public List<News> getNews() {
         return Objects.requireNonNullElse(news, Collections.emptyList());
     }
-    public void addComments(Comment comment){
-        if(comments==null) comments=new ArrayList<>();
-        comments.add(comment);
-    }
-    public List<Comment> getComments() {
-        return Objects.requireNonNullElse(comments, Collections.emptyList());
-    }
+
+
 }
