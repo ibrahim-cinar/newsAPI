@@ -4,13 +4,11 @@ import com.cinar.newsAPI.dto.CreateUserRequest;
 import com.cinar.newsAPI.dto.UpdateUserRequest;
 import com.cinar.newsAPI.dto.UserDto;
 import com.cinar.newsAPI.dto.converter.UserDtoConverter;
-import com.cinar.newsAPI.dto.converter.UsersNewsDtoConverter;
 import com.cinar.newsAPI.exception.*;
 import com.cinar.newsAPI.model.User;
 import com.cinar.newsAPI.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,15 +18,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final UserDtoConverter userDtoConverter;
-    private final UsersNewsDtoConverter usersNewsDtoConverter;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserService(UserRepository userRepository, UserDtoConverter userDtoConverter, UsersNewsDtoConverter usersNewsDtoConverter) {
+    public UserService(UserRepository userRepository, UserDtoConverter userDtoConverter, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.userDtoConverter = userDtoConverter;
-        this.usersNewsDtoConverter = usersNewsDtoConverter;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     public List<UserDto> getAllUser(){
         return userRepository.findAll().stream().
@@ -80,18 +77,26 @@ public class UserService {
         Optional<User> existingUserUsername = userRepository.findUserByUsername(username);
         return existingUserUsername.isEmpty();
     }
-    public static User createUserFromRequest(CreateUserRequest request){
-        if(isInputValid(request)){
-            return new User(request.getUsername(), request.getPassword(), request.getFirstName(), request.getLastName(),request.getEmail());
+    public User createUserFromRequest(CreateUserRequest request) {
+        if (isInputValid(request)) {
+            return createUser(request);
+        } else {
+            throw new InvalidInputException("Invalid input data");
         }
-        else throw new InvalidInputException("Invalid input data");
+    }
+
+    private User createUser(CreateUserRequest request) {
+        return new User(request.getUsername(),bCryptPasswordEncoder.encode(request.getPassword()),request.getFirstName(),
+                request.getLastName(),request.getEmail(),true,true,true,true,request.getAuthorities()
+        );
     }
     private static boolean isInputValid(CreateUserRequest request) {
         return request.getUsername() != null &&
                 request.getFirstName() != null &&
                 request.getLastName() != null &&
                 request.getEmail() != null &&
-                request.getPassword() != null;
+                request.getPassword() != null &&
+                request.getAuthorities() != null;
     }
     public UserDto updateUser(String email, UpdateUserRequest updateUserRequest) {
         User user = findUserByEmail(email)

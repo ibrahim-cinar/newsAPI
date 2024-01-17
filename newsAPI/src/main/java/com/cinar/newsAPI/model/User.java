@@ -7,11 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Builder
 @Data
@@ -19,7 +19,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String userId;
@@ -30,6 +31,11 @@ public class User {
     private String lastName;
     @Email
     private String email;
+    private boolean accountNonExpired;
+    private boolean isEnabled;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Comment> comments;
@@ -37,20 +43,39 @@ public class User {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<News> news;
-    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    @JoinTable(
-            name="users_roles",
-            joinColumns={@JoinColumn(name="user_id", referencedColumnName="userId")},
-            inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="roleId")})
-    private List<Role> roles = new ArrayList<>();
 
-    public User(String username, String password, String firstName, String lastName, String email) {
+    @ElementCollection(targetClass = Role.class,fetch = FetchType.EAGER)
+    @JoinTable(name = "roles",joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role",nullable = false)
+    @Enumerated(EnumType.STRING)
+    private List<Role> authorities;
+
+    public User(String username, String password, String firstName,
+                String lastName, String email, boolean accountNonExpired,
+                boolean isEnabled, boolean accountNonLocked,
+                boolean credentialsNonExpired, List<Role> authorities) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.accountNonExpired = accountNonExpired;
+        this.isEnabled = isEnabled;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.authorities = authorities;
     }
+
+    public User(String username, String password, String firstName, String lastName, String email, List<Role> authorities) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.authorities = authorities;
+    }
+
+
     public void addNews(News news1){
         if(news==null) news=new ArrayList<>();
         news.add(news1);
@@ -58,6 +83,7 @@ public class User {
     public List<News> getNews() {
         return Objects.requireNonNullElse(news, Collections.emptyList());
     }
+
 
 
 }
