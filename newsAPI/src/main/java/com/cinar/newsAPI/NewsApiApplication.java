@@ -11,16 +11,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
 
 @SpringBootApplication
-public class NewsApiApplication implements CommandLineRunner {
-	private UserService userService;
+public class NewsApiApplication{
 
-    public NewsApiApplication(UserService userService) {
-        this.userService = userService;
-    }
 
 
     public static void main(String[] args) {
@@ -38,16 +35,4 @@ public class NewsApiApplication implements CommandLineRunner {
 			.license(new License().name("Simple Web News API Licence")));
 }
 
-	@Override
-	public void run(String... args) throws Exception {
-		createDummyData();
-	}
-	private void createDummyData() {
-		CreateUserRequest request =  CreateUserRequest.builder().username("ibrahim").password("password").email("ibrahim@ibrahim")
-				.firstName("ibrahim").lastName("ibrahim").authorities(List.of(Role.ROLE_USER)).build();
-		userService.createUserFromRequest(request);
-		CreateUserRequest request1 =  CreateUserRequest.builder().username("sa").password("password").email("sa@sa")
-				.firstName("sa").lastName("sa").authorities(List.of(Role.ROLE_ADMIN)).build();
-		userService.createUserFromRequest(request1);
-	}
 }
