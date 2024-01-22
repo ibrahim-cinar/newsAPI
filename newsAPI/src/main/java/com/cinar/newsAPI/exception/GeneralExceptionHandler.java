@@ -62,4 +62,8 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> CommentNotFoundExceptionHandler(CommentNotFoundException exception)  {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(IncorrectPasswordException.class)
+    public ResponseEntity<?> IncorrectPasswordExceptionHandler(IncorrectPasswordException exception)  {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

@@ -1,9 +1,7 @@
 package com.cinar.newsAPI.controller;
 
-import com.cinar.newsAPI.dto.CreateUserRequest;
-import com.cinar.newsAPI.dto.UpdateUserRequest;
-import com.cinar.newsAPI.dto.UserDto;
-import com.cinar.newsAPI.dto.UsersNewsDto;
+import com.cinar.newsAPI.dto.*;
+import com.cinar.newsAPI.model.User;
 import com.cinar.newsAPI.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
@@ -29,6 +27,11 @@ public class UserController {
     public ResponseEntity<UserDto> getUserById(@PathVariable String id){
         return ResponseEntity.ok(userService.getUserById(id));
     }
+    @GetMapping("/password")
+    public ResponseEntity<User> getDecodePassword(@RequestBody UsersPassword usersPassword){
+        return ResponseEntity.ok(userService.decodePassword(usersPassword));
+
+    }
     @GetMapping("/username/{username}")
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username){
         return ResponseEntity.ok(userService.getUserByUsername(username));
@@ -47,9 +50,9 @@ public class UserController {
     public ResponseEntity<UserDto> updateUser(@RequestBody UpdateUserRequest updateUserRequest,@PathVariable String email){
         return ResponseEntity.ok(userService.updateUser(email,updateUserRequest));
     }
-    @DeleteMapping("/{email}")
-    public  ResponseEntity<UserDto> deleteCustomer(@PathVariable String email){
-        userService.deleteUser(email);
+    @DeleteMapping("/{username}")
+    public  ResponseEntity<UserDto> deleteUser(@PathVariable String username){
+        userService.deleteUser(username);
         return ResponseEntity.ok().build();
     }
 }

@@ -44,9 +44,4 @@ public class NewsController {
     public ResponseEntity<NewsDto> updateNews(@RequestBody UpdateNewsRequest updateNewsRequest,@PathVariable String id){
         return ResponseEntity.ok(newsService.updateNews(updateNewsRequest,id));
     }
-    @DeleteMapping("/delete/{id}")
-    public  ResponseEntity<NewsDto> deleteNews(@PathVariable String id){
-        newsService.deleteNews(id);
-        return ResponseEntity.ok().build();
-    }
 }
