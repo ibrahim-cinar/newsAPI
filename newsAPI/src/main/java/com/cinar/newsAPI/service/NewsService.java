@@ -62,7 +62,7 @@ public class NewsService {
         News savedNews = newsRepository.save(news);
         return newsDtoConverter.convert(savedNews);
     }
-    private News createNewsFromRequest(CreateNewsRequest request){
+    protected News createNewsFromRequest(CreateNewsRequest request){
         return new News(
                 request.getTitle()
                 ,request.getDescription()
@@ -85,7 +85,7 @@ public class NewsService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "News no found");
     }
-    private  boolean doesNewsExist(String id){
+    protected  boolean doesNewsExist(String id){
         return newsRepository.existsById(id);
     }
 }

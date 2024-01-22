@@ -87,7 +87,7 @@ public class CommentService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "comment no found");
     }
-    private  boolean doesCommentExist(String id){
+    protected  boolean doesCommentExist(String id){
         return commentRepository.existsById(id);
     }
 }

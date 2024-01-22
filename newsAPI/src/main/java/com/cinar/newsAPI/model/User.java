@@ -78,6 +78,33 @@ public class User implements UserDetails {
         this.authorities = authorities;
     }
 
+    public User(String userId, String username, String password, String firstName, String lastName, String email) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    public User(String username, String password, String firstName,
+                String lastName, String email,
+                boolean accountNonExpired, boolean isEnabled,
+                boolean accountNonLocked, boolean credentialsNonExpired,
+                List<Comment> comments, List<News> news, List<Role> authorities) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.accountNonExpired = accountNonExpired;
+        this.isEnabled = isEnabled;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.comments = comments;
+        this.news = news;
+        this.authorities = authorities;
+    }
 
     public void addNews(News news1){
         if(news==null) news=new ArrayList<>();
@@ -86,7 +113,5 @@ public class User implements UserDetails {
     public List<News> getNews() {
         return Objects.requireNonNullElse(news, Collections.emptyList());
     }
-
-
 
 }

@@ -69,7 +69,7 @@ public class UserService {
         return userDtoConverter.convert(userEmail);
     }
 
-    private User decodePassword(UsersPassword usersPassword) {
+    protected User decodePassword(UsersPassword usersPassword) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         boolean passwordMatches = bCryptPasswordEncoder.matches(
                 usersPassword.getPassword(),
@@ -96,12 +96,12 @@ public class UserService {
 
     }
 
-    private boolean isEmailUnique(String email) {
+    protected boolean isEmailUnique(String email) {
         Optional<User> existingUserEmail = userRepository.findUserByEmail(email);
         return existingUserEmail.isEmpty();
     }
 
-    private boolean isUsernameUnique(String username) {
+    protected boolean isUsernameUnique(String username) {
         Optional<User> existingUserUsername = userRepository.findUserByUsername(username);
         return existingUserUsername.isEmpty();
     }
@@ -147,7 +147,7 @@ public class UserService {
         return userDtoConverter.convert(updatedUser);
     }
 
-    private void validateUniqueFields(User user, UpdateUserRequest updateUserRequest) {
+    protected void validateUniqueFields(User user, UpdateUserRequest updateUserRequest) {
         if (!user.getEmail().equals(updateUserRequest.getEmail()) && !isEmailUnique(updateUserRequest.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
