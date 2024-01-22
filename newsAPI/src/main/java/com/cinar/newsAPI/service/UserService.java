@@ -69,7 +69,7 @@ public class UserService {
         return userDtoConverter.convert(userEmail);
     }
 
-    public User decodePassword(UsersPassword usersPassword) {
+    private User decodePassword(UsersPassword usersPassword) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         boolean passwordMatches = bCryptPasswordEncoder.matches(
                 usersPassword.getPassword(),
@@ -116,7 +116,9 @@ public class UserService {
 
     private User createUser(CreateUserRequest request) {
         return new User(request.getUsername(), bCryptPasswordEncoder.encode(request.getPassword()), request.getFirstName(),
-                request.getLastName(), request.getEmail(), true, true, true, true, request.getAuthorities()
+                request.getLastName(), request.getEmail(), true,
+                true, true, true,
+                request.getAuthorities()
         );
     }
 

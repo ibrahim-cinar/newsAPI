@@ -25,9 +25,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/swagger-ui/index.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/v1/api/news/news/{username}/**").hasRole(Role.ROLE_ADMIN.getValue())
+                        .requestMatchers(HttpMethod.POST, "/v1/api/news/**").hasRole(Role.ROLE_ADMIN.getValue())
                         .requestMatchers(HttpMethod.POST, "/v1/api/user/**").hasRole(Role.ROLE_ADMIN.getValue())
-                        .requestMatchers("/v1/api/comment/**").hasRole(Role.ROLE_ADMIN.getValue())
+                        .requestMatchers("/v1/api/comment/**").hasRole(Role.ROLE_USER.getValue())
                         .requestMatchers("/v1/api/user/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(AbstractHttpConfigurer::disable)

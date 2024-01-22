@@ -27,11 +27,6 @@ public class UserController {
     public ResponseEntity<UserDto> getUserById(@PathVariable String id){
         return ResponseEntity.ok(userService.getUserById(id));
     }
-    @GetMapping("/password")
-    public ResponseEntity<User> getDecodePassword(@RequestBody UsersPassword usersPassword){
-        return ResponseEntity.ok(userService.decodePassword(usersPassword));
-
-    }
     @GetMapping("/username/{username}")
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username){
         return ResponseEntity.ok(userService.getUserByUsername(username));
