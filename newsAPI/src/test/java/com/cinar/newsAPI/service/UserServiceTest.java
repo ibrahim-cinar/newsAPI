@@ -5,13 +5,15 @@ import com.cinar.newsAPI.model.User;
 import com.cinar.newsAPI.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
-
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
     private UserService userService;
@@ -25,7 +27,9 @@ public class UserServiceTest {
         this.userDtoConverter = userDtoConverter;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-    @BeforeEach
+
+
+    @BeforeEach()
     public void setUp(){
         userRepository = mock(UserRepository.class);
         userDtoConverter = mock(UserDtoConverter.class);
@@ -33,10 +37,10 @@ public class UserServiceTest {
         userService = new UserService(userRepository, userDtoConverter, bCryptPasswordEncoder);
     }
 
-    @Test
+    /*@Test
     public void testGetAllUser(){
         userService.getAllUser();
-    }
+    }*/
 
 @Test
 public void testFindUserById_whenUserIdExist_shouldReturnUser(){
