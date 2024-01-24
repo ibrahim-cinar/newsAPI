@@ -16,7 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import java.util.List;
 
 @SpringBootApplication
-public class NewsApiApplication{
+public class NewsApiApplication {
 
 
 
